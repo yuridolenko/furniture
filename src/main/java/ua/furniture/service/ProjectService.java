@@ -10,7 +10,6 @@ import java.util.Optional;
 @Service
 public class ProjectService {
 
-    @Autowired
     private ProjectRepository projectRepository;
 
     public Optional<Project> get(String id) {
@@ -22,4 +21,8 @@ public class ProjectService {
         return projectRepository.save(project);
     }
 
+    @Autowired
+    public void setProjectRepository(ProjectRepository projectRepository) {
+        this.projectRepository = projectRepository;
+    }
 }
