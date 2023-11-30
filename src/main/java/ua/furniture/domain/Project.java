@@ -15,4 +15,10 @@ public class Project {
 
     private String name;
 
+    private String accountName;
+
+    private String address;
+
+    private String phoneNumber;
+
 }
