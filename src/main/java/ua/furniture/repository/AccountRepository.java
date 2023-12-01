@@ -4,9 +4,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import ua.furniture.domain.Account;
 import ua.furniture.domain.Project;
 
-import java.util.Optional;
+import java.util.List;
 
-public interface ProjectRepository extends MongoRepository<Project, String> {
-
-    Optional<Project> findByAccount(Account account);
+public interface AccountRepository extends MongoRepository<Account, String> {
+    List<Account> findByName(String name);
 }

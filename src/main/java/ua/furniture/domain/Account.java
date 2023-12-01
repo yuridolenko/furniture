@@ -4,19 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
-@Document(collection = "projects")
+@Document(collection = "accounts")
 @AllArgsConstructor
 @Data
-public class Project {
+public class Account {
 
     @Id
     private String id;
 
     private String name;
 
-    @DocumentReference(lazy = true)
-    private Account account;
+    private String address;
 
+    private String phone;
 }
