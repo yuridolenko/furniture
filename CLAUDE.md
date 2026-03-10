@@ -47,9 +47,10 @@ Spring Boot 3.1.5 REST API (Java 17) with MongoDB, following a standard layered 
 
 ## Testing
 
-Tests live under `src/test/java/ua/furniture/` in two packages:
+Tests live under `src/test/java/ua/furniture/` in three packages:
 - `service/` — unit tests with Mockito mocks
-- `web/` — controller tests with MockMvc; `BaseControllerTest` and `WebTestConfiguration` are shared test infrastructure
+- `web/` — controller tests with MockMvc; `BaseControllerTest` excludes MongoDB auto-configuration (no DB needed)
+- `repository/` — integration tests using Testcontainers (`mongo:7.0`); `AbstractRepositoryTest` spins up a real MongoDB container via `@DynamicPropertySource`
 
 ## Docker / MongoDB Setup
 
