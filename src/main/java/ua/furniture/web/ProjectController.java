@@ -7,6 +7,8 @@ import ua.furniture.exception.ProjectNotFoundException;
 import ua.furniture.service.ProjectService;
 import ua.furniture.web.dto.ProjectDTO;
 
+import java.util.List;
+
 @RestController
 public class ProjectController {
 
@@ -25,10 +27,8 @@ public class ProjectController {
     }
 
     @GetMapping("project/account/{id}")
-    public Project getByAccount(@PathVariable("id") String accountId) {
-        return projectService
-                .getByAccountId(accountId)
-                .orElseThrow(ProjectNotFoundException::new);
+    public List<Project> getByAccount(@PathVariable("id") String accountId) {
+        return projectService.getByAccountId(accountId);
     }
 
     @PostMapping("project")

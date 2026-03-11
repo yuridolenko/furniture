@@ -7,6 +7,7 @@ import ua.furniture.exception.AccountNotFoundException;
 import ua.furniture.repository.ProjectRepository;
 import ua.furniture.web.dto.ProjectDTO;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -43,10 +44,9 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public Optional<Project> getByAccountId(String accountId) {
+    public List<Project> getByAccountId(String accountId) {
         var account = accountService.get(accountId)
                 .orElseThrow(AccountNotFoundException::new);
-        return projectRepository
-                .findByAccount(account);
+        return projectRepository.findByAccount(account);
     }
 }

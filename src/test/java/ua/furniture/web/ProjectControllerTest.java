@@ -11,6 +11,7 @@ import ua.furniture.exception.AccountNotFoundException;
 import ua.furniture.service.ProjectService;
 import ua.furniture.web.dto.ProjectDTO;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -51,12 +52,23 @@ class ProjectControllerTest extends BaseControllerTest {
     }
 
     @Test
-    void getByAccount_whenProjectExists_returns200() throws Exception {
-        when(projectService.getByAccountId("a1")).thenReturn(Optional.of(project));
+    void getByAccount_whenProjectsExist_returns200WithList() throws Exception {
+        var project2 = new Project("p2", "Living Room", new Account("a1", "Johnson", "New York", "+12025550123"));
+        when(projectService.getByAccountId("a1")).thenReturn(List.of(project, project2));
 
         mockMvc.perform(get("/project/account/a1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value("p1"));
+                .andExpect(jsonPath("$[0].id").value("p1"))
+                .andExpect(jsonPath("$[1].id").value("p2"));
+    }
+
+    @Test
+    void getByAccount_whenNoProjects_returns200WithEmptyList() throws Exception {
+        when(projectService.getByAccountId("a1")).thenReturn(List.of());
+
+        mockMvc.perform(get("/project/account/a1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isEmpty());
     }
 
     @Test
@@ -64,14 +76,6 @@ class ProjectControllerTest extends BaseControllerTest {
         when(projectService.getByAccountId("bad")).thenThrow(AccountNotFoundException.class);
 
         mockMvc.perform(get("/project/account/bad"))
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
-    void getByAccount_whenProjectNotFound_returns404() throws Exception {
-        when(projectService.getByAccountId("a1")).thenReturn(Optional.empty());
-
-        mockMvc.perform(get("/project/account/a1"))
                 .andExpect(status().isNotFound());
     }
 

@@ -28,7 +28,7 @@ Spring Boot 3.1.5 REST API (Java 17) with MongoDB, following a standard layered 
 
 **Layers:** `web/` (controllers + DTOs) → `service/` → `repository/` → MongoDB
 
-**Domain:** `Account` (customer with name/address/phone) and `Project` (furniture project tied to an account). `Project` holds embedded account info via `ProjectDTO`.
+**Domain:** `Account` (customer with name/address/phone) and `Project` (furniture project with a lazy `@DocumentReference` to `Account`). One account can have many projects. `ProjectDTO` is the request body for creating a project (carries `name` + `accountId`).
 
 **Exceptions:** Custom `AccountNotFoundException` / `ProjectNotFoundException` map to HTTP 404.
 

@@ -11,6 +11,7 @@ import ua.furniture.exception.AccountNotFoundException;
 import ua.furniture.repository.ProjectRepository;
 import ua.furniture.web.dto.ProjectDTO;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -67,7 +68,7 @@ class ProjectServiceTest {
 
     @Test
     void create_whenAccountNotFound_throwsAccountNotFoundException() {
-        var dto = new ProjectDTO("Kitchen", "bad-id");
+        var dto = new ProjectDTO("Bedroom", "bad-id");
         when(accountService.get("bad-id")).thenReturn(Optional.empty());
 
         assertThrows(AccountNotFoundException.class, () -> projectService.create(dto));
@@ -75,16 +76,18 @@ class ProjectServiceTest {
     }
 
     @Test
-    void getByAccountId_whenAccountAndProjectExist_returnsProject() {
+    void getByAccountId_whenAccountAndProjectsExist_returnsProjects() {
         var account = new Account("a1", "Johnson", "New York", "+12025550123");
-        var project = new Project("p1", "Kitchen", account);
+        var project1 = new Project("p1", "Kitchen", account);
+        var project2 = new Project("p2", "Living Room", account);
         when(accountService.get("a1")).thenReturn(Optional.of(account));
-        when(projectRepository.findByAccount(account)).thenReturn(Optional.of(project));
+        when(projectRepository.findByAccount(account)).thenReturn(List.of(project1, project2));
 
         var result = projectService.getByAccountId("a1");
 
-        assertTrue(result.isPresent());
-        assertEquals("p1", result.get().getId());
+        assertEquals(2, result.size());
+        assertEquals("p1", result.get(0).getId());
+        assertEquals("p2", result.get(1).getId());
     }
 
     @Test

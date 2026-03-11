@@ -55,18 +55,18 @@ class ProjectRepositoryTest extends AbstractRepositoryTest {
     }
 
     @Test
-    void findByAccount_whenProjectExists_returnsProject() {
+    void findByAccount_whenProjectsExist_returnsAllProjects() {
         projectRepository.save(new Project(null, "Kitchen", account));
+        projectRepository.save(new Project(null, "Living Room", account));
 
         var result = projectRepository.findByAccount(account);
 
-        assertThat(result).isPresent();
-        assertThat(result.get().getName()).isEqualTo("Kitchen");
-        assertThat(result.get().getAccount().getId()).isEqualTo(account.getId());
+        assertThat(result).hasSize(2);
+        assertThat(result.get(0).getAccount().getId()).isEqualTo(account.getId());
     }
 
     @Test
-    void findByAccount_whenNoProject_returnsEmpty() {
+    void findByAccount_whenNoProjects_returnsEmptyList() {
         var otherAccount = accountRepository.save(new Account(null, "Smith", "LA", "+13105550199"));
 
         var result = projectRepository.findByAccount(otherAccount);
