@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import ua.furniture.domain.Account;
 import ua.furniture.domain.Project;
 import ua.furniture.exception.AccountNotFoundException;
@@ -101,5 +102,30 @@ class ProjectControllerTest extends BaseControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isNotFound());
+    }
+
+    // --- Security: unauthenticated access ---
+
+    @Test
+    @WithAnonymousUser
+    void get_withoutAuth_returns401() throws Exception {
+        mockMvc.perform(get("/project/p1"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithAnonymousUser
+    void getByAccount_withoutAuth_returns401() throws Exception {
+        mockMvc.perform(get("/project/account/a1"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithAnonymousUser
+    void create_withoutAuth_returns401() throws Exception {
+        mockMvc.perform(post("/project")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isUnauthorized());
     }
 }

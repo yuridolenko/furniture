@@ -44,9 +44,9 @@ class ProjectServiceTest {
 
     @Test
     void get_whenProjectNotExists_returnsEmpty() {
-        when(projectRepository.findById("99")).thenReturn(Optional.empty());
+        when(projectRepository.findById("100")).thenReturn(Optional.empty());
 
-        var result = projectService.get("99");
+        var result = projectService.get("100");
 
         assertTrue(result.isEmpty());
     }

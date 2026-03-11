@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import ua.furniture.domain.Account;
 import ua.furniture.service.AccountService;
 
@@ -65,5 +66,30 @@ class AccountControllerTest extends BaseControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value("1"))
                 .andExpect(jsonPath("$.name").value("Johnson"));
+    }
+
+    // --- Security: unauthenticated access ---
+
+    @Test
+    @WithAnonymousUser
+    void get_withoutAuth_returns401() throws Exception {
+        mockMvc.perform(get("/account/1"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithAnonymousUser
+    void getAll_withoutAuth_returns401() throws Exception {
+        mockMvc.perform(get("/account"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithAnonymousUser
+    void create_withoutAuth_returns401() throws Exception {
+        mockMvc.perform(post("/account")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isUnauthorized());
     }
 }
