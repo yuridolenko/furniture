@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import ua.furniture.domain.Project;
 import ua.furniture.exception.ProjectNotFoundException;
 import ua.furniture.service.ProjectService;
-import ua.furniture.web.dto.ProjectDTO;
+import ua.furniture.web.dto.ProjectResponse;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class ProjectController {
     }
 
     @PostMapping("project")
-    public Project create(@RequestBody ProjectDTO project) {
+    public Project create(@RequestBody ProjectResponse project) {
         return projectService.create(project);
     }
 }

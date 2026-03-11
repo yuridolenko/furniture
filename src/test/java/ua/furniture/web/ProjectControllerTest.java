@@ -10,7 +10,7 @@ import ua.furniture.domain.Account;
 import ua.furniture.domain.Project;
 import ua.furniture.exception.AccountNotFoundException;
 import ua.furniture.service.ProjectService;
-import ua.furniture.web.dto.ProjectDTO;
+import ua.furniture.web.dto.ProjectResponse;
 
 import java.util.List;
 import java.util.Optional;
@@ -82,7 +82,7 @@ class ProjectControllerTest extends BaseControllerTest {
 
     @Test
     void create_returnsCreatedProjectWith200() throws Exception {
-        var dto = new ProjectDTO("Kitchen", "a1");
+        var dto = new ProjectResponse("Kitchen", "a1");
         when(projectService.create(any())).thenReturn(project);
 
         mockMvc.perform(post("/project")
@@ -95,7 +95,7 @@ class ProjectControllerTest extends BaseControllerTest {
 
     @Test
     void create_whenAccountNotFound_returns404() throws Exception {
-        var dto = new ProjectDTO("Kitchen", "bad-id");
+        var dto = new ProjectResponse("Kitchen", "bad-id");
         when(projectService.create(any())).thenThrow(AccountNotFoundException.class);
 
         mockMvc.perform(post("/project")

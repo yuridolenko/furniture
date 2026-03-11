@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ua.furniture.domain.Project;
 import ua.furniture.exception.AccountNotFoundException;
 import ua.furniture.repository.ProjectRepository;
-import ua.furniture.web.dto.ProjectDTO;
+import ua.furniture.web.dto.ProjectResponse;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,13 +22,13 @@ public class ProjectService {
                 .findById(id);
     }
 
-    public Project create(ProjectDTO projectDto) {
+    public Project create(ProjectResponse projectDto) {
         var account = accountService
-                .get(projectDto.getAccountId())
+                .get(projectDto.accountId())
                 .orElseThrow(AccountNotFoundException::new);
         var project = new Project(
                 null,
-                projectDto.getName(),
+                projectDto.name(),
                 account
         );
         return projectRepository.save(project);

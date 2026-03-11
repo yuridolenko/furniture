@@ -9,7 +9,7 @@ import ua.furniture.domain.Account;
 import ua.furniture.domain.Project;
 import ua.furniture.exception.AccountNotFoundException;
 import ua.furniture.repository.ProjectRepository;
-import ua.furniture.web.dto.ProjectDTO;
+import ua.furniture.web.dto.ProjectResponse;
 
 import java.util.List;
 import java.util.Optional;
@@ -54,7 +54,7 @@ class ProjectServiceTest {
     @Test
     void create_whenAccountExists_savesProject() {
         var account = new Account("a1", "Johnson", "New York", "+12025550123");
-        var dto = new ProjectDTO("Kitchen", "a1");
+        var dto = new ProjectResponse("Kitchen", "a1");
         var saved = new Project("p1", "Kitchen", account);
         when(accountService.get("a1")).thenReturn(Optional.of(account));
         when(projectRepository.save(any())).thenReturn(saved);
@@ -68,7 +68,7 @@ class ProjectServiceTest {
 
     @Test
     void create_whenAccountNotFound_throwsAccountNotFoundException() {
-        var dto = new ProjectDTO("Bedroom", "bad-id");
+        var dto = new ProjectResponse("Bedroom", "bad-id");
         when(accountService.get("bad-id")).thenReturn(Optional.empty());
 
         assertThrows(AccountNotFoundException.class, () -> projectService.create(dto));
